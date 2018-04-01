@@ -1,0 +1,29 @@
+stages:
+    - build
+    - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE: registry.svc.bluescripts.net/ifcfg/web
+
+services:
+- docker:dind
+
+build:
+  image: docker:latest
+  stage: build
+  script:
+    - docker build -t $IMAGE:$CI_COMMIT_SHA .
+    - docker tag $IMAGE:$CI_COMMIT_SHA registry.svc.bluescripts.net/hnypots/web:latest
+    - docker push $IMAGE:$CI_COMMIT_SHA
+    - docker push $IMAGE:latest
+
+deploy:
+  image: ubuntu
+  stage: deploy
+  before_script:
+    - apt-get update && apt-get install -y curl
+    - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+  script:
+    - cd deployment/hnypots
+    - KUBECONFIG=<(echo "$KUBECONFIG") helm upgrade ifcfg . -i --namespace ifcfg --wait --debug --set "image.tag=$CI_COMMIT_SHA"
