@@ -25,5 +25,5 @@ deploy:
     - apt-get update && apt-get install -y curl
     - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
   script:
-    - cd deployment/hnypots
+    - cd deployment/ifcfg
     - KUBECONFIG=<(echo "$KUBECONFIG") helm upgrade ifcfg . -i --namespace ifcfg --wait --debug --set "image.tag=$CI_COMMIT_SHA"
