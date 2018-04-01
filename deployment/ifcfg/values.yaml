@@ -15,6 +15,7 @@ ingress:
   # Used to create Ingress record (should used with service.type: ClusterIP).
   hosts:
     - ifcfg.svc.bluescripts.net
+    - ifcfg.net
 resources:
   limits:
 #    cpu: 1500m
