@@ -14,7 +14,7 @@ build:
   stage: build
   script:
     - docker build -t $IMAGE:$CI_COMMIT_SHA .
-    - docker tag $IMAGE:$CI_COMMIT_SHA registry.svc.bluescripts.net/hnypots/web:latest
+    - docker tag $IMAGE:$CI_COMMIT_SHA $IMAGE:latest
     - docker push $IMAGE:$CI_COMMIT_SHA
     - docker push $IMAGE:latest
 
