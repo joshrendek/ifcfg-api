@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ifcfg.net README</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+    </head>
+    <body>
+        <div class="container">
+
+            <center>
+                <h3>Your IP Address is</h3>
+                <h1>{{ .ip }}</h1>
+            </center>
+
+            <div class="page-header">
+                <h1>README</h1>
+                <p class="lead">All you need to know about <a href="http://ifcfg.net/">http://ifcfg.net/</a></p>
+            </div>
+
+            <h2>Why, Who, and Source</h2>
+            <p>
+                I wanted a simple to use API to get my current IP and other network information.
+                Other websites that used to offer this have become cluttered with ads or taking multiple seconds to respond.
+                I also wanted an excuse to make a small project to learn Scala and the Play! framework.
+            </p>
+
+            <p>My name is <a href="http://joshrendek.com/">Josh Rendek</a>.</p>
+            <p>The source for this website is on github: <a href="https://github.com/joshrendek/scala-ifcfg-api">https://github.com/joshrendek/scala-ifcfg-api</a></p>
+            <p>The BGP Looking Glass scraper library I made is here: <a href="https://github.com/joshrendek/scala-bgp">https://github.com/joshrendek/scala-bgp</a></p>
+
+
+            <hr>
+
+            <h2>API Endpoints</h2>
+
+            <h3>GET /</h3>
+            Hitting the root url will echo back your IP.
+            <div>
+                <h4>Response</h4>
+                <pre>11.22.33.44</pre>
+            </div>
+
+
+            <h3>GET /ping/(:ip)</h3>
+            Get ping statistics to the specified IP or yours if none is specified.
+            <ul>
+                <li><b>:ip</b> - An IPv4 address to ping (optional) - can be ommited to check requesting IP</li>
+                <li><b>count</b> - can be appended as an additional query string parameter, min is 1, max is 20 (ex: /ping?count=5)</li>
+            </ul>
+
+            <div>
+                <h4>Response</h4>
+<pre>
+{
+    avg: 1.158,
+    min: 1.03,
+    std_dev: 0.103,
+    max: 1.328,
+    transmitted: 5,
+    received: 5,
+    packet_loss: 0
+}
+</pre>
+            </div>
+
+            <h3>GET /traceroute/(:ip)</h3>
+            Get a traceroute to the specified IP or yours if none is specified.
+            <ul>
+                <li><b>:ip</b> - An IPv4 address to traceroute (optional) - can be ommitted to check requesting IP</li>
+            </ul>
+            <div>
+                <h4>Response</h4>
+<pre>
+[
+    "1 ddwrt (192.168.5.1) 1.017 ms 0.835 ms 1.100 ms",
+    "2 192.168.2.1 (192.168.2.1) 1.107 ms 1.065 ms 1.122 ms",
+    "3 192.168.1.1 (192.168.1.1) 1.919 ms 2.766 ms 2.586 ms",
+    "4 l100.tampfl-vfttp-141.verizon-gni.net (96.254.154.1) 6.411 ms 5.284 ms 5.512 ms",
+    "5 g0-9-3-0.tampfl-lcr-22.verizon-gni.net (130.81.140.74) 7.440 ms 7.079 ms 6.693 ms",
+    "6 so-4-0-0-0.tpa01-bb-rtr2.verizon-gni.net (130.81.199.28) 6.718 ms",
+    "so-2-0-0-0.tpa01-bb-rtr2.verizon-gni.net (130.81.28.214) 7.739 ms 7.781 ms",
+    "7 0.xe-3-1-8.xt2.atl4.alter.net (152.63.7.113) 22.449 ms 23.830 ms 22.836 ms",
+    "8 tengige0-5-0-0.gw7.atl4.alter.net (152.63.86.182) 26.503 ms 28.483 ms 28.151 ms",
+    "9 teliasonera-gw.customer.alter.net (157.130.90.238) 26.332 ms 24.480 ms 25.656 ms",
+    "10 ash-bb4-link.telia.net (80.91.248.138) 42.026 ms",
+    "ash-bb4-link.telia.net (80.91.254.162) 38.856 ms",
+    "ash-bb3-link.telia.net (213.155.134.130) 41.103 ms",
+    "11 nyk-bb1-link.telia.net (213.155.134.148) 43.566 ms",
+    "nyk-bb1-link.telia.net (213.155.134.126) 46.472 ms",
+    "nyk-bb1-link.telia.net (213.155.131.238) 45.632 ms",
+    "12 nyk-b6-link.telia.net (213.155.130.241) 60.503 ms",
+    "nyk-b6-link.telia.net (80.91.253.93) 42.336 ms",
+    "nyk-b6-link.telia.net (213.155.130.241) 43.889 ms",
+    "13 digitalocean-ic-302450-nyk-b6.c.telia.net (62.115.34.14) 45.691 ms 45.846 ms 43.799 ms",
+    "14 app1.joshrendek.com (192.34.61.38) 43.997 ms 46.544 ms 48.838 ms"
+]
+</pre>
+                </div>
+
+            <h3>GET /as/:num</h3>
+            Get information about a AS.
+            <div>
+                <h4>Response</h4>
+                <pre>
+                    {
+                    "bgpPeerList":4158,
+                    "as":174,
+                    "asPathLength":3.64,
+                    "ipsOriginated":27981312,
+                    "countryOfOrigin":"United States",
+                    "prefixList":2199
+                    }
+                </pre>
+            </div>
+
+            <h3>GET /as/:num/peer_list</h3>
+            Get the list of peers for this AS.
+            <div>
+                <h4>Response</h4>
+                <pre>
+[
+    {
+        as: "AS3356",
+        name: "Level 3 Communications, Inc.",
+        ipv6: true,
+        rank: 1
+    }
+]
+</pre>
+            </div>
+
+            <h3>GET /as/:num/prefix_list</h3>
+            Get the list of prefixes contained within the AS.
+            <div>
+                <h4>Response</h4>
+                <pre>
+[
+    {
+        description: "Eurona-Brisknet Ltd",
+        subnet: "5.83.240.0/20"
+    },
+    {
+        description: "FORTUNIX NETWORKS L.P.",
+        subnet: "5.149.252.0/23"
+    }
+]
+</pre>
+            </div>
+
+            <h3>GET /rbl/list</h3>
+            Get a list of RBL's to check against.
+            <div>
+<pre>
+[
+    "access.redhawk.org",
+    "b.barracudacentral.org",
+    "bl.shlink.org",
+    "bl.spamcannibal.org",
+    "bl.spamcop.net"
+]
+</pre>
+            </div>
+
+            <h3>GET /rbl/(:ip)</h3>
+            Check :ip against all RBL's at /rbl/list. If the check takes longer than 60 seconds an error will be thrown.
+            <ul>
+                <li><b>:ip</b> - An IPv4 address to check (optional) - can be ommitted to check requesting IP</li>
+            </ul>
+            <div>
+<pre>
+[
+    {
+        access.redhawk.org: {
+            blacklisted: false,
+            result: [ ]
+        }
+    },
+    {
+        b.barracudacentral.org: {
+            blacklisted: true,
+            result: [
+                "127.0.0.2"
+            ]
+        }
+    },
+    {
+        bl.shlink.org: {
+            blacklisted: false,
+            result: [ ]
+        }
+    }
+]
+</pre>
+            </div>
+
+            <h3>GET /rbl/:ip/:rbl_list</h3>
+            Check :ip against a specific set of :rbl_list servers. If the check takes longer than 60 seconds an error will be thrown.
+            <ul>
+                <li><b>:rbl_list</b> - A + separated list of hosts, eg: b.barracudacentral.org+bl.shlink.org</li>
+            </ul>
+            <div>
+<pre>
+[
+    {
+        b.barracudacentral.org: {
+        blacklisted: true,
+        result: [
+            "127.0.0.2"
+        ]
+        }
+    },
+    {
+        bl.shlink.org: {
+        blacklisted: false,
+        result: [
+
+        ]
+        }
+    }
+]
+</pre>
+            </div>
+
+        </div> <!-- /container -->
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-3754808-29', 'ifcfg.net');
+        ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>
