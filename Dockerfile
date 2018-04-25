@@ -9,5 +9,5 @@ FROM alpine:3.7
 WORKDIR /app
 ENV PORT 8080
 COPY --from=build-env /go/src/github.com/joshrendek/ifcfg/ifcfg-api /app/ifcfg-api
-ADD views .
+ADD views/ views/
 ENTRYPOINT ["./ifcfg-api"]
