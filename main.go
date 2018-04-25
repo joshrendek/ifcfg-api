@@ -9,7 +9,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.LoadHTMLGlob("views/*")
+	r.LoadHTMLGlob("view/*")
 	r.GET("/", func(c *gin.Context) {
 		userAgent := c.Request.Header.Get("User-Agent")
 		ip := c.Request.Header.Get("X-Forwarded-For")
